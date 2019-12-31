@@ -127,7 +127,7 @@ class WPThemeIndexer {
 
 
         let rpOptions = {
-            uri: "https://api.wordpress.org/themes/info/1.1/?action=query_themes&request[page]=" + pageNumber, //todo: get real url
+            uri: "https://api.wordpress.org/themes/info/1.1/?action=query_themes&request[page]=" + pageNumber,
 
             headers: {
                 'User-Agent': 'Request-Promise'
@@ -173,4 +173,3 @@ const wpThemes = new WPThemeIndexer(options, RequestPromise);
 wpThemes.updateAllThemes();
 
 wpThemes.getOptions();
-
