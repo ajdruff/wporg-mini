@@ -40,7 +40,7 @@ var WpIndexer = /** @class */ (function () {
         console.log(JSON.stringify(this.wpConfig["themes"]));
         console.log(JSON.stringify(this.wpConfig["themes"].baseUrl));
     };
-    WpIndexer.prototype.updateAllItems = function () {
+    WpIndexer.prototype.getAllItems = function (callback) {
         var self = this.self;
         var rpOptions = {
             uri: this.wpConfig[self.wpType].baseUrl,
@@ -51,13 +51,13 @@ var WpIndexer = /** @class */ (function () {
         };
         RequestPromise(rpOptions)
             .then(function (body) {
-            self.getItems(body);
+            self.getItems(body, callback);
         })
             .catch(function (err) {
             console.log('api failed ' + err);
         });
     };
-    WpIndexer.prototype.getItems = function (body) {
+    WpIndexer.prototype.getItems = function (body, callback) {
         var self = this.self;
         this.numberOfPages = parseInt(body["info"]["pages"]);
         this.numberOfItems = parseInt(body["info"]["results"]);
@@ -71,19 +71,20 @@ var WpIndexer = /** @class */ (function () {
             if (pageNumber == this.numberOfPages)
                 numberOfItemsOnPage = (this.numberOfItems - (this.numberOfItemsPerPage * pageNumber));
             //..and then loop through each item in the page
-            this.getItemsInPage(pageNumber, numberOfItemsOnPage);
+            this.getItemsInPage(pageNumber, numberOfItemsOnPage, callback);
             if (itemCounter >= this.numberOfItems)
                 break;
             itemCounter++;
             pageNumber++;
         }
     };
-    WpIndexer.prototype.getItemsInPage = function (pageNumber, numberOfItemsOnPage) {
+    WpIndexer.prototype.getItemsInPage = function (pageNumber, numberOfItemsOnPage, callback) {
         var self = this.self;
         function getPageItems(pageNumber, numberOfItemsOnPage, body) {
             var itemCounter = 0;
             while (itemCounter < numberOfItemsOnPage && itemCounter < self.WpIndexerOptions.maxItemsPerPage) {
                 console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemCounter + ' ' + body[self.wpType][itemCounter]["name"]);
+                callback(body[self.wpType][itemCounter]);
                 //     console.log(pageNumber + ',' + itemCounter + ': ' + body["themes"][itemCounter]["name"])
                 itemCounter++;
             }
@@ -119,6 +120,32 @@ var options = {
 var RequestPromise = require("request-promise");
 var wpThemeIndex = new WpIndexer(options, "themes", RequestPromise);
 var wpPluginIndex = new WpIndexer(options, "plugins", RequestPromise);
-false && wpThemeIndex.updateAllItems();
-true && wpPluginIndex.updateAllItems();
-//wpIndex.getOptions();
+function printOutItem(item) {
+    console.log(JSON.stringify(item));
+}
+wpThemeIndex.getAllItems(printOutItem);
+false && wpPluginIndex.getAllItems(printOutItem);
+var connector = {
+    hostIdentifier: "",
+    engineName: "themes",
+    searchKey: "private-f776am23u4hb86ckqfvxoybz",
+    endpointBase: "http://localhost:3002",
+    baseUrlFn: "http://localhost:3002/api/as/v1/"
+};
+var AppSearchClient = require("@elastic/app-search-node");
+var ElasticAppSearchClient = /** @class */ (function () {
+    function ElasticAppSearchClient(connector) {
+        this.self = this;
+        this.self.connector = connector;
+        var baseUrlFn = function () { return connector.baseUrlFn; };
+        this.client = new AppSearchClient(undefined, connector.searchKey, baseUrlFn);
+    }
+    /* Updates Elastic App Search Engine with doucment */
+    ElasticAppSearchClient.prototype.indexElastAppSearchDocument = function (documents) {
+        this.client
+            .indexDocuments(this.connector.engineName, documents)
+            .then(function (response) { return console.log(response); })
+            .catch(function (error) { return console.log(error); });
+    };
+    return ElasticAppSearchClient;
+}());

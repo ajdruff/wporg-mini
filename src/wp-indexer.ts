@@ -55,7 +55,7 @@ class WpIndexer {
         console.log(JSON.stringify(this.wpConfig["themes"].baseUrl))
 
     }
-    public updateAllItems(): void {
+    public getAllItems(callback: FunctionStringCallback): void {
 
         let self = this.self
 
@@ -75,7 +75,7 @@ class WpIndexer {
 
                 function (body) {
 
-                    self.getItems(body)
+                    self.getItems(body, callback)
                 }
 
             )
@@ -91,7 +91,7 @@ class WpIndexer {
     private numberOfItems: number;
     private numberOfItemsPerPage: number;
 
-    private getItems(body: object): void {
+    private getItems(body: object, callback): void {
 
         let self = this.self;
 
@@ -108,7 +108,7 @@ class WpIndexer {
             if (pageNumber == this.numberOfPages) numberOfItemsOnPage = (this.numberOfItems - (this.numberOfItemsPerPage * pageNumber))
 
             //..and then loop through each item in the page
-            this.getItemsInPage(pageNumber, numberOfItemsOnPage)
+            this.getItemsInPage(pageNumber, numberOfItemsOnPage, callback)
 
             if (itemCounter >= this.numberOfItems) break;
             itemCounter++;
@@ -117,7 +117,7 @@ class WpIndexer {
     }
 
 
-    private getItemsInPage(pageNumber: number, numberOfItemsOnPage: number): void {
+    private getItemsInPage(pageNumber: number, numberOfItemsOnPage: number, callback): void {
         let self = this.self
 
         function getPageItems(
@@ -129,6 +129,7 @@ class WpIndexer {
             let itemCounter = 0
             while (itemCounter < numberOfItemsOnPage && itemCounter < self.WpIndexerOptions.maxItemsPerPage) {
                 console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemCounter + ' ' + body[self.wpType][itemCounter]["name"])
+                callback(body[self.wpType][itemCounter]);
                 //     console.log(pageNumber + ',' + itemCounter + ': ' + body["themes"][itemCounter]["name"])
                 itemCounter++;
 
@@ -173,7 +174,12 @@ class WpIndexer {
 
 
     }
+
+
+
 }
+
+
 
 const options = {
     apiDelay: 1000,
@@ -182,13 +188,68 @@ const options = {
 }
 
 
+
 import RequestPromise = require("request-promise");
 
 const wpThemeIndex = new WpIndexer(options, "themes", RequestPromise);
 const wpPluginIndex = new WpIndexer(options, "plugins", RequestPromise);
+function printOutItem(item: any) {
 
-wpThemeIndex.updateAllItems();
+    console.log(JSON.stringify(item))
+}
+wpThemeIndex.getAllItems(printOutItem);
 
-wpPluginIndex.updateAllItems();
+false && wpPluginIndex.getAllItems(printOutItem);
 
 //wpIndex.getOptions();
+interface elasticSearchConnector {
+    hostIdentifier: string,
+    engineName: string,
+    searchKey: string,
+    endpointBase: string,
+    baseUrlFn: string
+
+}
+
+const connector: elasticSearchConnector = {
+    hostIdentifier: "",
+    engineName: "themes",
+    searchKey: "private-f776am23u4hb86ckqfvxoybz",
+    endpointBase: "http://localhost:3002",
+    baseUrlFn: "http://localhost:3002/api/as/v1/"
+};
+
+
+import AppSearchClient = require('@elastic/app-search-node')
+
+
+
+
+
+class ElasticAppSearchClient {
+
+    constructor(connector: elasticSearchConnector) {
+
+        this.self = this;
+        this.self.connector = connector;
+        const baseUrlFn = () => connector.baseUrlFn
+
+        this.client = new AppSearchClient(undefined, connector.searchKey, baseUrlFn)
+
+
+
+    }
+    private self: ElasticAppSearchClient;
+    private connector: elasticSearchConnector;
+    private client: AppSearchClient;
+    /* Updates Elastic App Search Engine with doucment */
+    private indexElastAppSearchDocument(documents): void {
+        this.client
+            .indexDocuments(this.connector.engineName, documents)
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+
+    }
+
+
+}
