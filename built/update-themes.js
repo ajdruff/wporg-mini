@@ -1,22 +1,31 @@
 "use strict";
 //'use strict';
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var WPThemeIndexer = /** @class */ (function () {
     function WPThemeIndexer(Options, rp) {
-        this.setDefaultOptions;
         this.self = this;
-        this.WPIndexerOptions = Options;
-        //   this.WPIndexerOptions = { ...this.WPIndexerOptions, ...Options };
+        // this.setDefaultOptions;
+        //  this.WPIndexerOptions = Options;
+        var defaultOptions = {
+            apiDelay: 1000,
+            maxItemsPerPage: 1,
+            maxPages: 1
+        };
+        //merges default settings with specified options
+        this.WPIndexerOptions = __assign(__assign({}, defaultOptions), Options);
         this.RequestPromise = rp;
     }
-    WPThemeIndexer.prototype.setDefaultOptions = function () {
-        this.WPIndexerOptions = {
-            apiDelay: 1000,
-            maxItemsPerPage: 99,
-            maxPages: 9999
-        };
-        return;
-    };
     WPThemeIndexer.prototype.getOptions = function () {
         console.log(JSON.stringify(this.WPIndexerOptions));
     };
@@ -92,10 +101,10 @@ var WPThemeIndexer = /** @class */ (function () {
 }());
 var options = {
     apiDelay: 1000,
-    maxItemsPerPage: 5,
-    maxPages: 2
+    maxPages: 3,
+    maxItemsPerPage: 5
 };
 var RequestPromise = require("request-promise");
 var wpThemes = new WPThemeIndexer(options, RequestPromise);
 wpThemes.updateAllThemes();
-//wpThemes.getOptions();
+wpThemes.getOptions();

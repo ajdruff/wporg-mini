@@ -1,9 +1,9 @@
 //'use strict';
 
 interface IndexerOptions {
-    apiDelay: number,
-    maxItemsPerPage: number,
-    maxPages: number
+    apiDelay?: number,
+    maxItemsPerPage?: number,
+    maxPages?: number
 }
 
 
@@ -11,26 +11,24 @@ interface IndexerOptions {
 class WPThemeIndexer {
     constructor(Options: IndexerOptions, rp: object) {
         this.self = this;
-        this.setDefaultOptions;
+        // this.setDefaultOptions;
 
-        this.WPIndexerOptions = Options;
-
-        //   this.WPIndexerOptions = { ...this.WPIndexerOptions, ...Options };
-
-        this.RequestPromise = rp;
-
-
-    }
-    private setDefaultOptions(): void {
-
-        this.WPIndexerOptions = {
+        //  this.WPIndexerOptions = Options;
+        let defaultOptions = {
             apiDelay: 1000,
             maxItemsPerPage: 1,
             maxPages: 1
 
         }
-        return;
+        //merges default settings with specified options
+        this.WPIndexerOptions = { ...defaultOptions, ...Options };
+
+
+        this.RequestPromise = rp;
+
+
     }
+
     private self;
 
     private WPIndexerOptions: IndexerOptions;
@@ -163,8 +161,8 @@ class WPThemeIndexer {
 
 const options = {
     apiDelay: 1000,
-    maxItemsPerPage: 5,
-    maxPages: 2
+    maxPages: 3,
+    maxItemsPerPage: 5
 }
 
 
@@ -174,5 +172,5 @@ const wpThemes = new WPThemeIndexer(options, RequestPromise);
 
 wpThemes.updateAllThemes();
 
-//wpThemes.getOptions();
+wpThemes.getOptions();
 
