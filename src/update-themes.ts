@@ -10,9 +10,10 @@ interface IndexerOptions {
 
 class WPThemeIndexer {
     constructor(Options: IndexerOptions, rp: object) {
-        this.setDefaultOptions;
         this.self = this;
+        this.setDefaultOptions;
 
+        this.WPIndexerOptions = Options;
 
         //   this.WPIndexerOptions = { ...this.WPIndexerOptions, ...Options };
 
@@ -24,8 +25,8 @@ class WPThemeIndexer {
 
         this.WPIndexerOptions = {
             apiDelay: 1000,
-            maxItemsPerPage: 99,
-            maxPages: 9999
+            maxItemsPerPage: 1,
+            maxPages: 1
 
         }
         return;
@@ -162,8 +163,8 @@ class WPThemeIndexer {
 
 const options = {
     apiDelay: 1000,
-    maxItemsPerPage: undefined,
-    maxPages: undefined
+    maxItemsPerPage: 5,
+    maxPages: 2
 }
 
 
@@ -171,7 +172,7 @@ import RequestPromise = require("request-promise");
 
 const wpThemes = new WPThemeIndexer(options, RequestPromise);
 
-//wpThemes.updateAllThemes();
+wpThemes.updateAllThemes();
 
-wpThemes.getOptions();
+//wpThemes.getOptions();
 

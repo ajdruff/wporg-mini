@@ -5,6 +5,7 @@ var WPThemeIndexer = /** @class */ (function () {
     function WPThemeIndexer(Options, rp) {
         this.setDefaultOptions;
         this.self = this;
+        this.WPIndexerOptions = Options;
         //   this.WPIndexerOptions = { ...this.WPIndexerOptions, ...Options };
         this.RequestPromise = rp;
     }
@@ -91,10 +92,10 @@ var WPThemeIndexer = /** @class */ (function () {
 }());
 var options = {
     apiDelay: 1000,
-    maxItemsPerPage: undefined,
-    maxPages: undefined
+    maxItemsPerPage: 5,
+    maxPages: 2
 };
 var RequestPromise = require("request-promise");
 var wpThemes = new WPThemeIndexer(options, RequestPromise);
-//wpThemes.updateAllThemes();
-wpThemes.getOptions();
+wpThemes.updateAllThemes();
+//wpThemes.getOptions();
