@@ -1,0 +1,20 @@
+{
+  "name": "wporg-mini-example",
+  "version": "1.0.0",
+  "description": "Example to show how to use wporg-mini. Pulls down a few pages of plugins and themes.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "andrew@nomstock.com",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5",
+    "wporg-mini": "file:../dist"
+  },
+  "devDependencies": {
+    "test": ">=0.0.5"
+  }
+}
