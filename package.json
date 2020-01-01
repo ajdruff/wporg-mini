@@ -4,7 +4,7 @@
   "description": "A  tiny WpOrg API client for requesting all the themes and plugins from the WordPress directory",
   "main": "lib/wporg-mini.js",
   "scripts": {
-    "build": "rm -rf ./dist;tsc;cp package.json ./dist/",
+    "build": "./build.sh",
     "test": "node tests/get-items/index.js"
   },
   "keywords": [],

@@ -43,7 +43,8 @@ An example is included in the GitHub project, clone and run it:
 
         git clone git@github.com:ajdruff/wporg-mini.git
         cd wporg-mini/example
-        yarn add ../dist/  #(if installed locally)
+        # yarn add ../dist/  # if installed locally
+        yarn add wporg-mini # if installed from npmjs repo
         yarn install
         node ./index.js
 
