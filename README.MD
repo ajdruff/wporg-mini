@@ -106,3 +106,8 @@ Andrew Druffner <andrew@nomstock.com>
 ## Contributions Welcome
 
 Please submit a pull request! 
+
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
