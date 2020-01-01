@@ -1,6 +1,6 @@
 # Wporg Mini
 
-This project provides a npm module that can query the WP Org API.Currently it supports pulling down plugin and theme information only.
+This project provides a npm module that can query the [WordPress.org API](https://codex.wordpress.org/WordPress.org_API).Currently it supports pulling down plugin and theme information only.
 
 Written in TypeScript, compiled to JavaScript as a node module. See 'Developer' section for how to deploy.
 
@@ -14,6 +14,8 @@ or to install from local source:
         cd wporg-mini
         npm run build
         npm install dist/
+
+Upon successful execution, it will list the first few themes of the first few pages of the WordPress.org Theme directory.
 
 ## Options
 
