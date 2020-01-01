@@ -6,16 +6,26 @@ Written in TypeScript, compiled to JavaScript as a node module. See 'Developer' 
 
 ## Installation
 
+## From the npm repository
+
         npm install wporg-mini
 
-or to install from local source:
 
-        git clone htts://github.com/ajdruff/wporg-mini.git
+## OR From local source:
+
+**First clone and build**
+
+        git clone git@github.com:ajdruff/wporg-mini.git
         cd wporg-mini
-        npm run build
-        npm install dist/
+        yarn install && npm run build
 
-Upon successful execution, it will list the first few themes of the first few pages of the WordPress.org Theme directory.
+By running the build, you have compiled TypeScript into the lib distribution folder `dist/`. You can now install it from within your node project. Its recommended you use yarn instead of npm since yarn seems to deal with dependencies better.
+
+        cd /path/to/your/node/project
+        yarn add /path/to/wporg-min/dist
+        yarn install
+
+See the Example section below for working code.
 
 ## Options
 
@@ -27,14 +37,17 @@ When creating the wpOrg object,you can pass options in its constructor.
                 maxItemsPerPage: 1 // the maximum items to retrieve from each page. WordPress default appears to be 23
             }
 
-## Example
+## Example 
 
 An example is included in the GitHub project, clone and run it:
 
-        git clone htts://github.com/ajdruff/wporg-mini.git
+        git clone git@github.com:ajdruff/wporg-mini.git
         cd wporg-mini/example
-        npm install
+        yarn add ../dist/  #(if installed locally)
+        yarn install
         node ./index.js
+
+Upon successful execution, it will list the first few themes of the first few pages of the WordPress.org Theme directory.
 
 ## Usage
 
