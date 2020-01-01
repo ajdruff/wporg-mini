@@ -1,0 +1,16 @@
+{
+  "name": "wporg-mini",
+  "version": "0.0.1",
+  "description": "A  tiny WpOrg API client for requesting all the themes and plugins from the WordPress directory",
+  "main": "lib/wporg-mini.js",
+  "scripts": {
+    "build": "rm -rf ./dist;tsc;cp package.json ./dist/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "andrew@nomstock.com",
+  "license": "MIT",
+  "dependencies": {
+    "request-promise": "^4.2.5"
+  }
+}
