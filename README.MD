@@ -39,15 +39,17 @@ Clone
 
 Install
 
-        # yarn add ../dist  # Only use this if you built a local distrubution (see Developer Docs section)
-        yarn add wporg-mini # Most users should  install this way, pulling from the latest version on the npm repo
-        yarn install
+        yarn add wporg-mini 
+        
+>if you built from source using the Developer section below, you'll use:
+> 
+>       yarn add ../dist #run this only if you are installing remotely and are not running `yarn add wporg-mini`
 
-Run it
+Run the example to list a few themes
 
-        node ./index.js # run the sample application
+        node ./index.js
 
-Upon successful execution, the callback function in the example prints out the first few themes of the first few pages of the WordPress.org Theme directory.
+Output - Upon successful execution, the callback function in the example prints out the first few themes of the first few pages of the WordPress.org Theme directory.
 
         PageNumber: 1 Item Number: 0 Theme:Pokama Lite
         PageNumber: 2 Item Number: 0 Theme:Store Commerce
@@ -59,7 +61,7 @@ To get a similar output for plugins, just uncomment the plugins code in example/
         const wpPlugins = new wpOrg(options, "plugins");
         wpPlugins.getAllItems(printOutPlugin);
 
->Note that the sequence of results will sometimes be unpredictable due to the asyncrhonous nature of the API calls. For example, if you run both at the same time, you'll notice that the results are intermixed even though you call the themes api endpoints before starting the plugin api calls.
+>Note that the sequence of results will sometimes be unpredictable due to the asynchronous nature of the API calls. For example, if you run both at the same time, you'll notice that the results are intermixed even though you call the themes api endpoints before starting the plugin api calls.
 
 ## Usage
 
@@ -77,7 +79,7 @@ To get a similar output for plugins, just uncomment the plugins code in example/
 
 With these options, wporg-mini will wait 2 seconds before requesting another item from the API, and it will get the first 3 pages and will only retrieve one result per page.
 
-**#create an instance if the wpOrg object**
+**#create an instance of the wpOrg module**
 
         const wpThemes = new wpOrg(
             options, //see options section of readme
@@ -112,7 +114,7 @@ To build the package locally you will need:
 
 ### Local Install
 
-**First clone and build**
+**Clone and build**
 
         git clone git@github.com:ajdruff/wporg-mini.git
         cd wporg-mini
@@ -129,7 +131,6 @@ To install into your project:
 
         cd /path/to/your/node/project
         yarn add /path/to/wporg-min/dist
-        yarn install
 
 Try out the example to see how you'd install it locally and use it in a project.
 
@@ -162,7 +163,6 @@ Something like:
         np
 
 >this uses the np package and will push to the npm and remote repo
-
 
 ## Authors
 
