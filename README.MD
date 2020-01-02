@@ -34,7 +34,7 @@ An example is included in the GitHub project, clone and run it:
 
 Clone
 
-        git clone git@github.com:ajdruff/wporg-mini.git
+        git clone https://github.com/ajdruff/wporg-mini.git
         cd wporg-mini/example
 
 Install
@@ -116,7 +116,7 @@ To build the package locally you will need:
 
 **Clone and build**
 
-        git clone git@github.com:ajdruff/wporg-mini.git
+        git clone https://github.com/ajdruff/wporg-mini.git
         cd wporg-mini
         npm run build
 
