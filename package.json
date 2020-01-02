@@ -1,6 +1,6 @@
 {
   "name": "wporg-mini",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A  tiny WpOrg API client for requesting all the themes and plugins from the WordPress directory",
   "main": "lib/wporg-mini.js",
   "scripts": {
