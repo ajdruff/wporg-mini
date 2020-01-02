@@ -4,12 +4,17 @@ var options = {
     maxPages: 3,
     maxItemsPerPage: 1
 };
-//var RequestPromise = require("request-promise");
-var wpThemes = new wpOrg(options, "themes");
-var wpPlugins = new wpOrg(options, "plugins");
-function printOutItem(item, pageNumber, itemNumber) {
-    console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemNumber + ' ' + item["name"]);
-    //console.log(item["name"])
+function printOutTheme(item, pageNumber, itemNumber) {
+    console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemNumber + ' Theme:' + item["name"]);
 }
-wpThemes.getAllItems(printOutItem);
-false && wpPlugins.getAllItems(printOutItem);
+function printOutPlugin(item, pageNumber, itemNumber) {
+    console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemNumber + ' Plugin:' + item["name"]);
+}
+//Themes
+var wpThemes = new wpOrg(options, //see options section of readme
+"themes" // 'themes' or 'plugins'
+);
+wpThemes.getAllItems(printOutTheme);
+//Plugins
+//const wpPlugins = new wpOrg(options, "plugins");
+//wpPlugins.getAllItems(printOutPlugin);

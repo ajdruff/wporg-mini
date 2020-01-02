@@ -4,6 +4,12 @@ This project provides a npm module that can query the [WordPress.org API](https:
 
 Written in TypeScript, compiled to JavaScript as a node module. See 'Developer' section for how to deploy.
 
+> Note that only the GitHub repo, not the npm repository, contains example files and the build script. 
+> To build and use the example, read the `Developer Docs` section below.
+>
+* [Wporg Mini on GitHub](https://github.com/ajdruff/wporg-mini)
+* [Wporg Mini on npm](https://www.npmjs.com/package/wporg-mini)
+
 ## Installation
 
 ## From the npm repository
@@ -11,21 +17,6 @@ Written in TypeScript, compiled to JavaScript as a node module. See 'Developer' 
         npm install wporg-mini
 
 
-## OR From local source:
-
-**First clone and build**
-
-        git clone git@github.com:ajdruff/wporg-mini.git
-        cd wporg-mini
-        yarn install && npm run build
-
-By running the build, you have compiled TypeScript into the lib distribution folder `dist/`. You can now install it from within your node project. Its recommended you use yarn instead of npm since yarn seems to deal with dependencies better.
-
-        cd /path/to/your/node/project
-        yarn add /path/to/wporg-min/dist
-        yarn install
-
-See the Example section below for working code.
 
 ## Options
 
@@ -37,18 +28,38 @@ When creating the wpOrg object,you can pass options in its constructor.
                 maxItemsPerPage: 1 // the maximum items to retrieve from each page. WordPress default appears to be 23
             }
 
-## Example 
+## Example
 
 An example is included in the GitHub project, clone and run it:
 
+Clone
+
         git clone git@github.com:ajdruff/wporg-mini.git
         cd wporg-mini/example
-        # yarn add ../dist/  # if installed locally
-        yarn add wporg-mini # if installed from npmjs repo
-        yarn install
-        node ./index.js
 
-Upon successful execution, it will list the first few themes of the first few pages of the WordPress.org Theme directory.
+Install
+
+        # yarn add ../dist  # Only use this if you built a local distrubution (see Developer Docs section)
+        yarn add wporg-mini # Most users should  install this way, pulling from the latest version on the npm repo
+        yarn install
+
+Run it
+
+        node ./index.js # run the sample application
+
+Upon successful execution, the callback function in the example prints out the first few themes of the first few pages of the WordPress.org Theme directory.
+
+        PageNumber: 1 Item Number: 0 Theme:Pokama Lite
+        PageNumber: 2 Item Number: 0 Theme:Store Commerce
+        PageNumber: 3 Item Number: 0 Theme:Switch Lite
+
+To get a similar output for plugins, just uncomment the plugins code in example/index.js:
+
+        //Plugins
+        const wpPlugins = new wpOrg(options, "plugins");
+        wpPlugins.getAllItems(printOutPlugin);
+
+>Note that the sequence of results will sometimes be unpredictable due to the asyncrhonous nature of the API calls. For example, if you run both at the same time, you'll notice that the results are intermixed even though you call the themes api endpoints before starting the plugin api calls.
 
 ## Usage
 
@@ -59,13 +70,14 @@ Upon successful execution, it will list the first few themes of the first few pa
 **#set options**
 
         const options = {
-            apiDelay: 2000,
+            apiDelay: 2000, 
             maxPages: 3,
             maxItemsPerPage: 1
         }
 
-**#create an instance**
+With these options, wporg-mini will wait 2 seconds before requesting another item from the API, and it will get the first 3 pages and will only retrieve one result per page.
 
+**#create an instance if the wpOrg object**
 
         const wpThemes = new wpOrg(
             options, //see options section of readme
@@ -75,29 +87,81 @@ Upon successful execution, it will list the first few themes of the first few pa
 
 **#create a callback to process the result**
 
-        function printOutItem(item, pageNumber, itemNumber) {
-            console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemNumber + ' ' + item["name"])
-     
+        function printOutTheme(item, pageNumber, itemNumber) {
+            console.log('PageNumber: ' + pageNumber + ' Item Number: ' + itemNumber + ' Theme:' + item["name"])
+
         }
 
-**get all items and process with the callback**
+**Call the getAllItems method to retrieve the results and trigger the callback**
 
-        wpThemes.getAllItems(printOutItem);
+       wpThemes.getAllItems(printOutTheme);
 
-## TypeScript
+## Developer Docs
+
+This section only applies to you if want to modify the module source code and rebuild it for distribution.
+
+### Requirements
+
+To build the package locally you will need:
+
+* A Bash shell environment
+* TypeScript compiler
+* yarn
+* npm
+* git
+
+### Local Install
+
+**First clone and build**
+
+        git clone git@github.com:ajdruff/wporg-mini.git
+        cd wporg-mini
+        npm run build
 
 
-## Build
+This does the following::
 
-This project is written in TypeScript. After making changes, use the npm build script which calls tsc to compiled and copy to the distribution directory.
+1. Compiles the TypeScript file src/wporg-mini.tsc into dist/lib/wporg-mini.js
+2. Adds nodejs package.json and supporting files to directory dist
+3. Recreates the example directory and contents
 
-To create a local build whose target is ./dist: 
+To install into your project:
 
-    npm run build
+        cd /path/to/your/node/project
+        yarn add /path/to/wporg-min/dist
+        yarn install
 
-To install the local build :
+Try out the example to see how you'd install it locally and use it in a project.
 
-    npm install /path/to/dist/
+### Making Changes
+
+To modify the code, you must edit the files in src and then build the project.
+
+so... the general flow is:
+
+**Edit**
+
+        vim src/wporg-mini.ts
+
+**Build**
+
+        npm run build
+
+>the resulting module will be built in directory `dist`. See Example for how you'd install.
+
+**Commit**
+
+Something like:
+
+    git commit -am 'added an awesome feature'
+    git checkout master
+    git merge my awesome-feature
+
+**Release**
+
+        np
+
+>this uses the np package and will push to the npm and remote repo
 
 
 ## Authors

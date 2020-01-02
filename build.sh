@@ -10,12 +10,12 @@ mkdir example
 
 # compile TypeScript
 
-tsc # compiles to dist
+tsc # compiles js files in src, creates dist directory and moves compiled files there
 
 # prepare lib
 mv dist/wporg-mini.js lib/wporg-mini.js
 
-# build example
+# Create example
 mv dist/example.index.js example/index.js
 cd example
 npm init -y
@@ -23,9 +23,12 @@ yarn add "request"
 yarn add "request-promise"
 rm -rf node_modules
 rm yarn.lock
+cd ../
 
+# Create final distribution using npm pack so it uses the .npmignore file
 
-# Release
-
-#        npm run build
-#        np
+mkdir -p ./dist
+npm pack
+tar -xzf *.tgz 
+rm *.tgz
+mv  package/* ./dist && rm -r package

@@ -1,6 +1,9 @@
-/dist
+dist
 node_modules
 -lock.json
 .lock
-examples
+example
 tsconfig.json
+tests
+src
+build.sh
